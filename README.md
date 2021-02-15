@@ -11,10 +11,10 @@ Ce programme, bien que fonctionnel, est tout sauf optimisé (code approximatif, 
 
 ## INSTALLATION
 Ce programme nécéssite :
-..* Python3
-..* paho-mqtt
-..* websocket (code à supprimer pour s'en passer)
-..* Socket.io python client: https://python-socketio.readthedocs.io/en/latest/client.html
+* Python3
+* paho-mqtt
+* websocket (code à supprimer pour s'en passer)
+* Socket.io python client: https://python-socketio.readthedocs.io/en/latest/client.html
 
 Pour l'installer (même procédure que celle présentée par Anthony sur son git)
 ```sh
