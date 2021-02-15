@@ -1,0 +1,31 @@
+#!/bin/sh
+
+if [ $(whoami) != 'root' ]; then
+	echo -e "\nVous devez avoir les droits super-utilisateur pour executer $0"
+	exit 1;
+fi
+
+echo "Installation des dépendances"
+pip3 install paho-mqtt
+pip3 install websocket-client
+pip3 install python-socketio==5.0.3
+pip3 install python-engineio==3.14.2
+pip install python-socketio==5.0.3
+pip install python-engineio==3.14.2
+pip install paho-mqtt
+pip install websocket-client
+echo "Copie des fichiers necessaires"
+if [ ! -d "/opt/maestro/" ];then
+	mkdir /opt/maestro/
+	chown -R $USER /opt/maestro/
+	chmod -R 0755 /opt/maestro/
+fi
+
+cp _config_.py /opt/maestro
+cp _data_.py /opt/maestro
+cp maestro.py /opt/maestro
+
+cp maestro.service /etc/systemd/system
+chmod a+x /etc/systemd/system/maestro.service
+systemctl --system daemon-reload
+echo "Fin de l'installation, tapez sudo systemctl start maestro.service pour lancer le daemon" 
