@@ -3,7 +3,7 @@ Description=Passerelle Equipements MCZ Maestro avec serveur MQTT
 After=network.target
 ConditionPathExists=/opt/maestro
 [Service]
-Type=forking
+Type=simple
 ExecStart=/usr/bin/python3 '/opt/maestro/maestro.py'
 TimeoutSec=0
 StandardOutput=tty
