@@ -27,7 +27,7 @@ except ImportError:
 
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
-formatter = logging.Formatter('%(asctime)s :: %(levelname)s :: %(message)s')
+formatter = logging.Formatter('%(asctime)s :%(name)s :: %(levelname)s :: %(message)s')
 file_handler = TimedRotatingFileHandler('maestro.log', when='D', interval=1, backupCount=5)
 file_handler.setLevel(logging.DEBUG)
 file_handler.setFormatter(formatter)
@@ -171,36 +171,44 @@ def receive(*args):
     while True:
         time.sleep(30)
         logger.info("Websocket still connected ? " + str(sio.connected))
-        logger.info("Envoi de la commande pour rafraichir les donnees")
-        sio.emit(
-            "chiedo",
-            {
-                "serialNumber": _MCZ_device_serial,
-                "macAddress": _MCZ_device_MAC,
-                "tipoChiamata": 1,
-                "richiesta": "C|RecuperoInfo",
-            },
-        )
-    time.sleep(15)
+        if sio.connected:
+            logger.info("Envoi de la commande pour rafraichir les donnees")
+            sio.emit(
+                "chiedo",
+                {
+                 "serialNumber": _MCZ_device_serial,
+                 "macAddress": _MCZ_device_MAC,
+                 "tipoChiamata": 1,
+                 "richiesta": "C|RecuperoInfo",
+                },
+            )
+            time.sleep(15)
+        else:
+            logger.warning("Websocket disconnected ! Waiting 30seconds")
+            time.sleep(30)
 
 
 def send():
     def run(*args):
         time.sleep(_INTERVALLE)
         logger.info("Websocket still connected ? " + str(sio.connected))
-        if Message_MQTT.pilevide():
-            Message_MQTT.empile("C|RecuperoInfo")
-        cmd = Message_MQTT.depile()
-        logger.info("Envoi de la commande : " + str(cmd))
-        sio.emit(
-            "chiedo",
-            {
-                "serialNumber": _MCZ_device_serial,
-                "macAddress": _MCZ_device_MAC,
-                "tipoChiamata": 1,
-                "richiesta": cmd,
-            },
-        )
+        if sio.connected:
+            if Message_MQTT.pilevide():
+                Message_MQTT.empile("C|RecuperoInfo")
+            cmd = Message_MQTT.depile()
+            logger.info("Envoi de la commande : " + str(cmd))
+            sio.emit(
+              "chiedo",
+               {
+                   "serialNumber": _MCZ_device_serial,
+                   "macAddress": _MCZ_device_MAC,
+                   "tipoChiamata": 1,
+                   "richiesta": cmd,
+               },
+            )
+        else:
+            logger.warning("Websocket disconnected ! waiting 30 seconds")
+            time.sleep(30)
 
     thread.start_new_thread(run, ())
 
