@@ -16,5 +16,5 @@ _MCZport = '81'                         # Port du serveur embarqué du poele
 _MCZ_device_serial = "xxxxxxxxxxxxx"    # n° de série du pôele
 _MCZ_device_MAC = "xxxxxxxxxxxx"        # MAC du pôele
 _MCZ_App_URL = "http://app.mcz.it:9000" # URL du server MCZ
-_VERSION = '1.5'                        # Version
-_AUTHOR = 'Anthony L.'                  # Auteur
+_VERSION = '1.6'                        # Version
+_AUTHOR = 'Pipolaq(Anthony L.)'                  # Auteur

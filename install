@@ -8,8 +8,8 @@ fi
 echo "Installation des dépendances"
 pip3 install paho-mqtt
 pip3 install websocket-client
-pip3 install python-socketio==5.0.3
-pip3 install python-engineio==3.14.2
+pip3 install python-socketio
+pip3 install python-engineio
 echo "Copie des fichiers necessaires"
 if [ ! -d "/opt/maestro/" ];then
 	mkdir /opt/maestro/
